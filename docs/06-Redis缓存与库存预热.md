@@ -486,23 +486,49 @@ public class TicketCommandFacade {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
+
 import com.example.flashticket.dto.TicketDtos.*;
-import com.example.flashticket.service.*;
 import com.example.flashticket.vo.TicketVos.*;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/events")
+
+@RestController
+@RequestMapping("/api/events")
 public class TicketEventController {
-    private final TicketEventService events; private final TicketQueryService query; private final TicketCommandFacade commands;
-    public TicketEventController(TicketEventService events,TicketQueryService query,TicketCommandFacade commands) {
-        this.events=events; this.query=query; this.commands=commands;
+    private final TicketEventService events;
+    private final TicketQueryService query;
+    private final TicketCommandFacade commands;
+
+    public TicketEventController(TicketEventService events, TicketQueryService query, TicketCommandFacade commands) {
+        this.events = events;
+        this.query = query;
+        this.commands = commands;
     }
-    @PostMapping public ApiResponse<EventVo> create(@Valid @RequestBody CreateEventRequest r){return ApiResponse.success(commands.createEvent(r));}
-    @GetMapping("/{id}") public ApiResponse<EventVo> get(@PathVariable Long id){return ApiResponse.success(query.getEvent(id));}
-    @GetMapping public ApiResponse<PageResult<EventVo>> page(@RequestParam(defaultValue="1")long page,@RequestParam(defaultValue="10")long size){return ApiResponse.success(events.page(page,size));}
-    @PutMapping("/{id}") public ApiResponse<EventVo> update(@PathVariable Long id,@Valid @RequestBody UpdateEventRequest r){return ApiResponse.success(commands.updateEvent(id,r));}
-    @PatchMapping("/{id}/status") public ApiResponse<EventVo> status(@PathVariable Long id,@Valid @RequestBody ChangeEventStatusRequest r){return ApiResponse.success(commands.changeStatus(id,r));}
+
+    @PostMapping
+    public ApiResponse<EventVo> create(@Valid @RequestBody CreateEventRequest r) {
+        return ApiResponse.success(commands.createEvent(r));
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<EventVo> get(@PathVariable Long id) {
+        return ApiResponse.success(query.getEvent(id));
+    }
+
+    @GetMapping
+    public ApiResponse<PageResult<EventVo>> page(@RequestParam(defaultValue = "1") long page, @RequestParam(defaultValue = "10") long size) {
+        return ApiResponse.success(events.page(page, size));
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<EventVo> update(@PathVariable Long id, @Valid @RequestBody UpdateEventRequest r) {
+        return ApiResponse.success(commands.updateEvent(id, r));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ApiResponse<EventVo> status(@PathVariable Long id, @Valid @RequestBody ChangeEventStatusRequest r) {
+        return ApiResponse.success(commands.changeStatus(id, r));
+    }
 }
 ```
 
@@ -510,19 +536,35 @@ public class TicketEventController {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
+
 import com.example.flashticket.dto.TicketDtos.CreateStockRequest;
-import com.example.flashticket.service.*;
 import com.example.flashticket.vo.TicketVos.StockVo;
 import jakarta.validation.Valid;
+
 import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/events/{eventId}/stocks")
+
+@RestController
+@RequestMapping("/api/events/{eventId}/stocks")
 public class TicketStockController {
-    private final TicketQueryService query; private final TicketCommandFacade commands;
-    public TicketStockController(TicketQueryService query,TicketCommandFacade commands){this.query=query;this.commands=commands;}
-    @PostMapping public ApiResponse<StockVo> create(@PathVariable Long eventId,@Valid @RequestBody CreateStockRequest r){return ApiResponse.success(commands.createStock(eventId,r));}
-    @GetMapping public ApiResponse<List<StockVo>> list(@PathVariable Long eventId){return ApiResponse.success(query.getStocks(eventId));}
+    private final TicketQueryService query;
+    private final TicketCommandFacade commands;
+
+    public TicketStockController(TicketQueryService query, TicketCommandFacade commands) {
+        this.query = query;
+        this.commands = commands;
+    }
+
+    @PostMapping
+    public ApiResponse<StockVo> create(@PathVariable Long eventId, @Valid @RequestBody CreateStockRequest r) {
+        return ApiResponse.success(commands.createStock(eventId, r));
+    }
+
+    @GetMapping
+    public ApiResponse<List<StockVo>> list(@PathVariable Long eventId) {
+        return ApiResponse.success(query.getStocks(eventId));
+    }
 }
 ```
 
@@ -530,18 +572,41 @@ public class TicketStockController {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
+
 import com.example.flashticket.config.CacheKeys;
-import com.example.flashticket.service.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/admin/cache")
+
+@RestController
+@RequestMapping("/api/admin/cache")
 public class CacheAdminController {
-    private final TicketQueryService query; private final RedisJsonCache cache; private final StringRedisTemplate redis;
-    public CacheAdminController(TicketQueryService query,RedisJsonCache cache,StringRedisTemplate redis){this.query=query;this.cache=cache;this.redis=redis;}
-    @PostMapping("/events/{id}/warm") public ApiResponse<Void> warm(@PathVariable Long id){query.getEvent(id);query.getStocks(id);return ApiResponse.success();}
-    @DeleteMapping("/events/{id}") public ApiResponse<Void> evict(@PathVariable Long id){query.evictEvent(id);return ApiResponse.success();}
-    @GetMapping("/stocks/{id}") public ApiResponse<String> displayStock(@PathVariable Long id){return ApiResponse.success(redis.opsForValue().get(CacheKeys.displayStock(id)));}
+    private final TicketQueryService query;
+    private final RedisJsonCache cache;
+    private final StringRedisTemplate redis;
+
+    public CacheAdminController(TicketQueryService query, RedisJsonCache cache, StringRedisTemplate redis) {
+        this.query = query;
+        this.cache = cache;
+        this.redis = redis;
+    }
+
+    @PostMapping("/events/{id}/warm")
+    public ApiResponse<Void> warm(@PathVariable Long id) {
+        query.getEvent(id);
+        query.getStocks(id);
+        return ApiResponse.success();
+    }
+
+    @DeleteMapping("/events/{id}")
+    public ApiResponse<Void> evict(@PathVariable Long id) {
+        query.evictEvent(id);
+        return ApiResponse.success();
+    }
+
+    @GetMapping("/stocks/{id}")
+    public ApiResponse<String> displayStock(@PathVariable Long id) {
+        return ApiResponse.success(redis.opsForValue().get(CacheKeys.displayStock(id)));
+    }
 }
 ```
 

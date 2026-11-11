@@ -401,16 +401,24 @@ public class RedissonConfig {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
+
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 public class InstanceController {
     private final String instanceId;
-    public InstanceController(@Value("${app.instance-id:${server.port}}")String instanceId){this.instanceId=instanceId;}
+
+    public InstanceController(@Value("${app.instance-id:${server.port}}") String instanceId) {
+        this.instanceId = instanceId;
+    }
+
     @GetMapping("/api/instance")
-    public ApiResponse<Map<String,String>> instance(){return ApiResponse.success(Map.of("instanceId",instanceId));}
+    public ApiResponse<Map<String, String>> instance() {
+        return ApiResponse.success(Map.of("instanceId", instanceId));
+    }
 }
 ```
 

@@ -1,6 +1,21 @@
 spring:
   application:
     name: flash-ticket
-
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/flash_ticket?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 3000
 server:
   port: 8080
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false

@@ -410,22 +410,50 @@ public class OrderCommandFacade {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
+
 import com.example.flashticket.dto.OrderDtos.CreateOrderRequest;
-import com.example.flashticket.service.*;
 import com.example.flashticket.vo.OrderVos.OrderVo;
 import jakarta.validation.Valid;
+
 import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/orders")
+
+@RestController
+@RequestMapping("/api/orders")
 public class TicketOrderController {
-    private final TicketOrderService orders; private final OrderCommandFacade commands;
-    public TicketOrderController(TicketOrderService orders,OrderCommandFacade commands){this.orders=orders;this.commands=commands;}
-    @PostMapping public ApiResponse<OrderVo> create(@Valid @RequestBody CreateOrderRequest r){return ApiResponse.success(orders.create(r));}
-    @GetMapping("/{id}") public ApiResponse<OrderVo> get(@PathVariable Long id){return ApiResponse.success(orders.get(id));}
-    @GetMapping public ApiResponse<List<OrderVo>> list(@RequestParam Long userId){return ApiResponse.success(orders.listByUser(userId));}
-    @PostMapping("/{id}/pay") public ApiResponse<OrderVo> pay(@PathVariable Long id){return ApiResponse.success(orders.pay(id));}
-    @PostMapping("/{id}/cancel") public ApiResponse<OrderVo> cancel(@PathVariable Long id){return ApiResponse.success(commands.cancel(id));}
+    private final TicketOrderService orders;
+    private final OrderCommandFacade commands;
+
+    public TicketOrderController(TicketOrderService orders, OrderCommandFacade commands) {
+        this.orders = orders;
+        this.commands = commands;
+    }
+
+    @PostMapping
+    public ApiResponse<OrderVo> create(@Valid @RequestBody CreateOrderRequest r) {
+        return ApiResponse.success(orders.create(r));
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<OrderVo> get(@PathVariable Long id) {
+        return ApiResponse.success(orders.get(id));
+    }
+
+    @GetMapping
+    public ApiResponse<List<OrderVo>> list(@RequestParam Long userId) {
+        return ApiResponse.success(orders.listByUser(userId));
+    }
+
+    @PostMapping("/{id}/pay")
+    public ApiResponse<OrderVo> pay(@PathVariable Long id) {
+        return ApiResponse.success(orders.pay(id));
+    }
+
+    @PostMapping("/{id}/cancel")
+    public ApiResponse<OrderVo> cancel(@PathVariable Long id) {
+        return ApiResponse.success(commands.cancel(id));
+    }
 }
 ```
 

@@ -588,7 +588,6 @@ public class BusinessException extends RuntimeException {
 ```java
 package com.example.flashticket.exception;
 
-import com.example.flashticket.common.ApiResponse;
 import java.util.stream.Collectors;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -847,7 +846,6 @@ public class TicketStockService {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
 import com.example.flashticket.dto.TicketDtos.*;
 import com.example.flashticket.service.TicketEventService;
 import com.example.flashticket.vo.TicketVos.*;
@@ -869,7 +867,6 @@ public class TicketEventController {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
 import com.example.flashticket.dto.TicketDtos.CreateStockRequest;
 import com.example.flashticket.service.TicketStockService;
 import com.example.flashticket.vo.TicketVos.StockVo;

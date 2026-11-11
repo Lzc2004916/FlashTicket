@@ -461,20 +461,32 @@ public class SeckillService {
 
 ```java
 package com.example.flashticket.controller;
-import com.example.flashticket.common.ApiResponse;
+
 import com.example.flashticket.dto.SeckillRequest;
 import com.example.flashticket.service.SeckillService;
 import com.example.flashticket.vo.OrderVos.OrderVo;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/seckill")
+
+@RestController
+@RequestMapping("/api/seckill")
 public class SeckillController {
     private final SeckillService service;
-    public SeckillController(SeckillService service){this.service=service;}
+
+    public SeckillController(SeckillService service) {
+        this.service = service;
+    }
+
     @PostMapping("/stocks/{stockId}/warm")
-    public ApiResponse<Void> warm(@PathVariable Long stockId){service.warm(stockId);return ApiResponse.success();}
+    public ApiResponse<Void> warm(@PathVariable Long stockId) {
+        service.warm(stockId);
+        return ApiResponse.success();
+    }
+
     @PostMapping
-    public ApiResponse<OrderVo> seckill(@Valid @RequestBody SeckillRequest r){return ApiResponse.success(service.seckill(r));}
+    public ApiResponse<OrderVo> seckill(@Valid @RequestBody SeckillRequest r) {
+        return ApiResponse.success(service.seckill(r));
+    }
 }
 ```
 
