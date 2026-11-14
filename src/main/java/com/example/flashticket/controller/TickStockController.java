@@ -7,6 +7,8 @@ import com.example.flashticket.vo.TickVos;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/events/{eventId}/stocks")
 public class TickStockController {
@@ -15,5 +17,9 @@ public class TickStockController {
     @PostMapping
     public ApiResponse<TickVos.StockVo> create(@PathVariable Long eventId, @RequestBody TicketDtos.CreateStockRequest createStockRequest){
         return ApiResponse.success(ticketStockService.create(eventId,createStockRequest));
+    }
+    @GetMapping
+    public ApiResponse<List<TickVos.StockVo>> list(@PathVariable Long eventId){
+        return ApiResponse.success(ticketStockService.listByEvent(eventId));
     }
 }

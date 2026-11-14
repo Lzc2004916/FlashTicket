@@ -12,7 +12,7 @@ public final class TicketDtos {
     ){}
     public record UpdateEventRequest(@NotBlank String name, @NotBlank String venue,
                                      @NotBlank LocalDateTime saleStartTime, @NotBlank LocalDateTime saleEndTime){}
-    public record ChangeEventStatusRequest(@NotNull @Min(0) @Max(2) Integer status){
+    public record ChangeEventStatusRequest(@NotNull @Positive @Max(2) Integer status){
 
     }
     public record CreateStockRequest(@NotBlank String tierName, @NotNull @DecimalMax("0.01")BigDecimal price,@NotNull @Max(1) Integer totalStock){}
