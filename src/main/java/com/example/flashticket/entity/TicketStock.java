@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class TicketStock {
     @TableId(type = IdType.AUTO)
     //票档Id
-    private Integer id;
+    private Long id;
     //活动id
     private Long eventId;
     //票档昵称
